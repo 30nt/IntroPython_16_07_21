@@ -10,9 +10,11 @@ def add_suffix_to_filename(filename, suffix):
     return filename
 
 
-path = "HW"
-filename = "lesson9.txt"
-path_filename = os.path.join(path, filename)
+if __name__ == "__main__":
+    path = "HW"
+    filename = "lesson9.txt"
+    path_filename = os.path.join(path, filename)
+    print(path_filename)
 
 # txt_file = open(path_filename, "r")
 # data = txt_file.read()
