@@ -7,35 +7,37 @@
 import os
 from string import ascii_lowercase as alphabet
 import random
+import json
 
 
 class AlphabetDirFiles:
     def __init__(self, dirname):
-        self.dirname = dirname
-        self.create_dir()
+        self._dirname = dirname
+        self._create_dir()
 
-    def create_dir(self):
-        os.makedirs(self.dirname, exist_ok=True)
+    def _create_dir(self):
+        os.makedirs(self._dirname, exist_ok=True)
 
-    def create_file(self, symbol):
-        filename = f"{self.dirname}/{symbol}.txt"
+    def _create_file(self, symbol):
+        filename = f"{self._dirname}/{symbol}.txt"
         with open(filename, "w") as file:
             file.write(alphabet.replace(symbol, symbol.upper()))
 
     def create_files(self):
         for symbol in alphabet:
-            self.create_file(symbol)
+            self._create_file(symbol)
 
     def do_tanos_click(self):
-        files = os.listdir(self.dirname)
+        files = os.listdir(self._dirname)
         random.shuffle(files)
         for filename in files[:len(files) // 2]:
-            os.remove(os.path.join(self.dirname, filename))
-
+            os.remove(os.path.join(self._dirname, filename))
 
 
 dirname = "alphabet"
-
 worker = AlphabetDirFiles(dirname)
+# worker._dirname = "tmp"
+
 worker.create_files()
-worker.do_tanos_click()
+
+# worker.do_tanos_click()
