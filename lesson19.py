@@ -2,12 +2,20 @@ import random
 from tkinter import *
 
 
+FONT_SIZE = 100  # добавить параметр font_size, отвечающий за размер шрифта
+
 class My15:
     def __init__(self):
-        self.my_15 = self.generate_15()
-        self.row, self.col = self.get_space()
+        self._my_15 = self._generate_15()
+        self._row, self._col = self._get_space()
+        # table = {(0, 0): "4", (0, 1): "", (3, 3): "15"}
+        # value = table[(self.row, self.col)]
 
-    def generate_15(self):
+    @property
+    def my_15(self):
+        return tuple([tuple(row) for row in self._my_15])
+
+    def _generate_15(self):
         my_15 = []
         all_values = [str(i) for i in range(1, 16)] + [""]
         random.shuffle(all_values)
@@ -15,15 +23,10 @@ class My15:
             my_15.append(all_values[4 * row_number: 4 * (row_number + 1)])
         return my_15
 
-    def print_15(self):
-        for row in self.my_15:
-            line = " ".join([f"{val:2}" for val in row])
-            print(line)
-
-    def get_space(self):
+    def _get_space(self):
         row_ = 0
         col_ = 0
-        for i, row in enumerate(self.my_15):
+        for i, row in enumerate(self._my_15):
             if '' in row:
                 row_ = i
                 for j, col in enumerate(row):
@@ -32,39 +35,43 @@ class My15:
         return row_, col_
 
     def move_down(self):
-        if self.row == 3:
+        if self._row == 3:
             return
-        self.my_15[self.row][self.col], self.my_15[self.row + 1][self.col] = self.my_15[self.row + 1][self.col], \
-                                                                             self.my_15[self.row][self.col]
-        self.row += 1
+        self._my_15[self._row][self._col], self._my_15[self._row + 1][self._col] = self._my_15[self._row + 1][
+                                                                                       self._col], \
+                                                                                   self._my_15[self._row][self._col]
+        self._row += 1
 
     def move_up(self):
-        if self.row == 0:
+        if self._row == 0:
             return
-        self.my_15[self.row][self.col], self.my_15[self.row - 1][self.col] = self.my_15[self.row - 1][self.col], \
-                                                                             self.my_15[self.row][self.col]
-        self.row -= 1
+        self._my_15[self._row][self._col], self._my_15[self._row - 1][self._col] = self._my_15[self._row - 1][
+                                                                                       self._col], \
+                                                                                   self._my_15[self._row][self._col]
+        self._row -= 1
 
     def move_right(self):
-        if self.col == 3:
+        if self._col == 3:
             return
-        self.my_15[self.row][self.col], self.my_15[self.row][self.col + 1] = self.my_15[self.row][self.col + 1], \
-                                                                             self.my_15[self.row][self.col]
-        self.col += 1
+        self._my_15[self._row][self._col], self._my_15[self._row][self._col + 1] = self._my_15[self._row][
+                                                                                       self._col + 1], \
+                                                                                   self._my_15[self._row][self._col]
+        self._col += 1
 
     def move_left(self):
-        if self.col == 0:
+        if self._col == 0:
             return
-        self.my_15[self.row][self.col], self.my_15[self.row][self.col - 1] = self.my_15[self.row][self.col - 1], \
-                                                                             self.my_15[self.row][self.col]
-        self.col -= 1
+        self._my_15[self._row][self._col], self._my_15[self._row][self._col - 1] = self._my_15[self._row][
+                                                                                       self._col - 1], \
+                                                                                   self._my_15[self._row][self._col]
+        self._col -= 1
 
 
-def draw_15_table(my_15):
+def draw_15_table(my_15, font_size=FONT_SIZE):
     for row_index, row in enumerate(my_15.my_15):
         for col_index, col in enumerate(row):
-            label = Entry(root, width=2, fg='white', bg='black', font=('Arial', 50, 'bold'), justify='center')
-            label.config(highlightbackground = "black")
+            label = Entry(root, width=2, fg='white', bg='black', font=('Arial', font_size, 'bold'), justify='center')
+            label.config(highlightbackground="black")
             label.grid(row=row_index, column=col_index)
             label.insert(END, col)
 
@@ -92,7 +99,7 @@ def down(event):
 my_15 = My15()
 root = Tk()
 root.title("15")
-root.geometry("275x280")
+root.geometry()
 root.configure(background='black')
 draw_15_table(my_15)
 root.bind("<Left>", left)
